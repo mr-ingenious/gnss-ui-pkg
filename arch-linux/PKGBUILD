@@ -1,0 +1,62 @@
+
+# Maintainer: mr.ingenious@gmail.com
+pkgname='gnss-ui'
+pkgver=0.10.5
+pkgrel=1
+pkgdesc="A graphical User Interface for GNSS receivers. It includes a GPSD client and NMEA parser."
+
+arch=('any')
+url="https://github.com/mr-ingenious/gnss-ui"
+license=('GPL3')
+
+depends=('libshumate>=1.2.2' 'gtk4>=4.14.4' 'python' 'python-gobject')
+#provides=("${pkgname%-VCS}")
+#conflicts=("${pkgname%-VCS}")
+replaces=('gnss-ui')
+#backup=()
+#options=()
+#install=
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/$pkgver.tar.gz")
+sha256sums=('a6874f296f2c4ac8af400d804700aa68fcdae4eceb8c3813d8151e8062ed3844')
+
+#prepare() {
+#    cd "$pkgname-$pkgver"
+#
+#    desktop-file-edit --set-key=Exec --set-value=gnss-ui pkg/gnss-ui.desktop
+#}
+
+
+package() {
+    cd "$pkgname-$pkgver/src"
+    local site_packages=$(python -c "import site; print(site.getsitepackages()[0])")
+
+    # install python files
+    install -Dm755 {gnss-ui,compass_panel,logger,config_provider,data_recorder_dashboard,data_recorder_panel}.py -t \
+    "${pkgdir}${site_packages}/gnss-ui/"
+    install -Dm755 {data_recorder,data_transformer,datamodel,gnss_info_panel,gps_data_provider,gpsd_client,gpsd_panel}.py -t \
+    "${pkgdir}${site_packages}/gnss-ui/"
+    install -Dm755 {gpsd_parser,left_menu_panel,map_panel,observer,panel,plot_window,position_info_panel,preferences_dialog2}.py -t \
+    "${pkgdir}${site_packages}/gnss-ui/"
+    install -Dm755 {recording_map,satellites_graphic_panel,map_panel,satellites_info_panel,shumate_map,tty_client}.py -t \
+    "${pkgdir}${site_packages}/gnss-ui/"
+    
+    install -Dm755 gnss-ui.py -t \ "${pkgdir}${site_packages}/gnss-ui/"
+
+    # install assets
+    cd "../assets"
+
+    local asset_files=$(ls -q *.css *.svg *.png background.jpg)
+
+    install -Dm755 $asset_files -t "${pkgdir}${site_packages}/gnss-ui/assets/"
+
+    cd ".."
+    # install -Dm644 "pkg/gnss-ui.svg" -t "${pkgdir}${site_packages}/gnss-ui/images/"
+    
+    install -Dm644 "pkg/gnss-ui.metainfo.xml" -t "$pkgdir/usr/share/metainfo/"
+    install -Dm644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname/"
+    install -Dm644 pkg/gnss-ui.desktop -t "$pkgdir/usr/share/applications/"
+
+    install -d "$pkgdir"/usr/{bin,share/icons/hicolor/scalable/apps}
+    ln -s "${site_packages}/gnss-ui/gnss-ui.py" "$pkgdir/usr/bin/${pkgname}"
+    ln -s "${site_packages}/gnss-ui/assets/gnss-ui.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/gnss-ui.svg"
+}
