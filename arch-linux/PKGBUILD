@@ -1,7 +1,7 @@
 
 # Maintainer: mr.ingenious@gmail.com
 pkgname='gnss-ui'
-pkgver=0.10.5
+pkgver=0.10.9
 pkgrel=1
 pkgdesc="A graphical User Interface for GNSS receivers. It includes a GPSD client and NMEA parser."
 
@@ -12,19 +12,11 @@ license=('GPL3')
 depends=('libshumate>=1.2.2' 'gtk4>=4.14.4' 'python' 'python-gobject')
 #provides=("${pkgname%-VCS}")
 #conflicts=("${pkgname%-VCS}")
-replaces=('gnss-ui')
 #backup=()
 #options=()
 #install=
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/$pkgver.tar.gz")
-sha256sums=('a6874f296f2c4ac8af400d804700aa68fcdae4eceb8c3813d8151e8062ed3844')
-
-#prepare() {
-#    cd "$pkgname-$pkgver"
-#
-#    desktop-file-edit --set-key=Exec --set-value=gnss-ui pkg/gnss-ui.desktop
-#}
-
+sha256sums=('d13763c4de8e5c54cb6362bb3df9b09ce580b351a4b09f7efdfed98f787aa146')
 
 package() {
     cd "$pkgname-$pkgver/src"
