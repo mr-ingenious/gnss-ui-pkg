@@ -1,4 +1,3 @@
-
 # Maintainer: mr.ingenious@gmail.com
 pkgname='gnss-ui'
 pkgver=0.10.9
@@ -7,14 +6,9 @@ pkgdesc="A graphical User Interface for GNSS receivers. It includes a GPSD clien
 
 arch=('any')
 url="https://github.com/mr-ingenious/gnss-ui"
-license=('GPL3')
+license=('GPL-3.0-or-later')
 
-depends=('libshumate>=1.2.2' 'gtk4>=4.14.4' 'python' 'python-gobject')
-#provides=("${pkgname%-VCS}")
-#conflicts=("${pkgname%-VCS}")
-#backup=()
-#options=()
-#install=
+depends=('libshumate' 'gtk4' 'python' 'python-gobject')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/$pkgver.tar.gz")
 sha256sums=('d13763c4de8e5c54cb6362bb3df9b09ce580b351a4b09f7efdfed98f787aa146')
 
@@ -45,7 +39,6 @@ package() {
     # install -Dm644 "pkg/gnss-ui.svg" -t "${pkgdir}${site_packages}/gnss-ui/images/"
     
     install -Dm644 "pkg/gnss-ui.metainfo.xml" -t "$pkgdir/usr/share/metainfo/"
-    install -Dm644 LICENSE -t "$pkgdir/usr/share/licenses/$pkgname/"
     install -Dm644 pkg/gnss-ui.desktop -t "$pkgdir/usr/share/applications/"
 
     install -d "$pkgdir"/usr/{bin,share/icons/hicolor/scalable/apps}
